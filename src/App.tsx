@@ -5,24 +5,25 @@ import Create from './views/Create';
 import Profile from './views/Profile';
 import Login from './views/Login';
 import Single from './views/Single';
+import Logout from './views/Logout';
 
 function App() {
-
   return (
     <>
       <Router>
         <Routes>
           <Route element={<Layout />}>
-            <Route path='/' element={<Home />} />
-            <Route path='/single' element={<Single />} />
-            <Route path='/create' element={<Create />}/>
-            <Route path='/profile' element={<Profile />} />
-            <Route path='/login' element={<Login />} />
+            <Route path="/" element={<Home />} />
+            <Route path="/single" element={<Single />} />
+            <Route path="/create" element={<Create />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/logout" element={<Logout />} />
+            <Route path="/login" element={<Login />} />
           </Route>
         </Routes>
       </Router>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
