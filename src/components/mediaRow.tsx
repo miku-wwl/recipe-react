@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
-import { RecipeItem } from "../types/DBTypes";
+import {Link} from 'react-router-dom';
+import {RecipeItem} from '../types/DBTypes';
 
 const RecipeRow = (props: {item: RecipeItem}) => {
   const {item} = props;
@@ -8,19 +8,28 @@ const RecipeRow = (props: {item: RecipeItem}) => {
     <div>
       <div>
         <a href="#">
-          <img src={item.thumbnail ? item.thumbnail : "https://placehold.jp/320x240.png"} alt={item.title} />
+          <img
+            src={
+              item.thumbnail
+                ? import.meta.env.VITE_RECIPE +
+                  '/recipe/images/' +
+                  item.thumbnail
+                : 'https://placehold.jp/320x240.png'
+            }
+            alt={item.title}
+          />
         </a>
       </div>
       <div>
-        <div>
-        {item.title}
-        </div>
+        <div>{item.title}</div>
       </div>
       <button>
-        <Link to="/single" state={item}>Show</Link>
+        <Link to="/single" state={item}>
+          Show
+        </Link>
       </button>
     </div>
   );
-}
+};
 
 export default RecipeRow;

@@ -1,5 +1,5 @@
-import { NavigateFunction, useLocation, useNavigate } from "react-router-dom";
-import { RecipeItem } from "../types/DBTypes";
+import {NavigateFunction, useLocation, useNavigate} from 'react-router-dom';
+import {RecipeItem} from '../types/DBTypes';
 
 const Single = () => {
   const {state} = useLocation();
@@ -12,22 +12,27 @@ const Single = () => {
       {item.media_type?.includes('video') ? (
         <video controls src="{item.filename}"></video>
       ) : (
-        <img src={item.filename} alt={item.title} />
+        <img
+          src={import.meta.env.VITE_RECIPE + '/recipe/images/' + item.filename}
+          alt={item.title}
+        />
       )}
 
       <p>{item.description}</p>
       <p>{item.ingredients}</p>
       <p>{item.instruction}</p>
-      <p>{new Date(item.created_at).toLocaleString('fi-FI')}</p>
+      <p>{new Date(item.created_at).toLocaleString('zh-CN')}</p>
       <p>{item.filesize}</p>
       <p>{item.media_type}</p>
-      <button onClick={() => {
-        navigate(-1);
-      }}>
+      <button
+        onClick={() => {
+          navigate(-1);
+        }}
+      >
         Go back
       </button>
     </>
   );
-}
+};
 
 export default Single;
