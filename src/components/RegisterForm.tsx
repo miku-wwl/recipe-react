@@ -1,10 +1,12 @@
 import {useState} from 'react';
 import {useUser} from '../hooks/apiHooks';
 import {useForm} from '../hooks/formHooks';
+import {useUserContext} from '../hooks/contextHooks';
 
 const RegisterForm = () => {
   const initValues = {username: '', password: '', email: ''};
   const {postUser} = useUser();
+  const {handleLogin} = useUserContext();
   const [usernameAvailable, setUsernameAvailable] = useState<boolean>(true);
   const [emailAvailable, setEmailAvailable] = useState<boolean>(true);
   const {getUsernameAvailable, getEmailAvailable} = useUser();
@@ -13,7 +15,11 @@ const RegisterForm = () => {
     try {
       console.log(inputs);
       if (usernameAvailable && emailAvailable) {
-        await postUser(inputs);
+        const result = await postUser(inputs);
+        alert(result.message);
+        if (result.user) {
+          handleLogin({username: inputs.username, password: inputs.password});
+        }
       }
     } catch (error) {
       console.log((error as Error).message);
@@ -40,7 +46,7 @@ const RegisterForm = () => {
   return (
     <div>
       <div className=" flex flex-col items-center gap-5 my-6">
-        <h3 className=" text-3xl text-center">Rekisteröidy</h3>
+        <h3 className=" text-3xl text-center">Register</h3>
         <form
           onSubmit={handleSubmit}
           className=" flex flex-col py-6 px-3 border rounded"
@@ -58,6 +64,7 @@ const RegisterForm = () => {
               onBlur={handleUsernameBlur}
               autoComplete="username"
             />
+            {!usernameAvailable ? <span>username already in use</span> : ''}
           </div>
           <div className=" flex justify-between">
             <label className=" p-3" htmlFor="password">
@@ -98,12 +105,13 @@ const RegisterForm = () => {
               onBlur={handleEmailBlur}
               autoComplete="email"
             />
+            {!emailAvailable ? <span>email already in use</span> : ''}
           </div>
           <button
             className="m-3 w-1/3 rounded-md bg-slate-700 p-3 self-center"
             type="submit"
           >
-            Rekisteröidy
+            Register
           </button>
         </form>
       </div>

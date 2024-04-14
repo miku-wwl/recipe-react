@@ -55,10 +55,11 @@ const useUser = () => {
       body: JSON.stringify(user),
     };
 
-    await fetchData<UserResponse>(
+    const result = await fetchData<UserResponse>(
       import.meta.env.VITE_AUTH_API + '/users',
       options,
     );
+    return result
   };
 
   const getUsernameAvailable = async (username: string) => {

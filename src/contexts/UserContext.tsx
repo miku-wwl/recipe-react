@@ -3,6 +3,7 @@ import {AuthContextType, Credentials} from '../types/LocalTypes';
 import {UserWithNoPassword} from '../types/DBTypes';
 import {useAuthentication, useUser} from '../hooks/apiHooks';
 import {useLocation, useNavigate} from 'react-router-dom';
+import {LoginResponse} from '../types/MessageTypes';
 
 const UserContext = createContext<AuthContextType | null>(null);
 
@@ -18,10 +19,11 @@ const UserProvider = ({children}: {children: React.ReactNode}) => {
     try {
       // post login credentials to API, set token to local storage
       // set user to state, navigate to home
-      const loginResult = await postLogin(credentials);
+      const loginResult: LoginResponse = await postLogin(credentials);
       if (loginResult) {
         localStorage.setItem('token', loginResult.token);
         setUser(loginResult.user);
+        alert(loginResult.message);
         navigate('/');
       }
     } catch (e) {
