@@ -22,12 +22,12 @@ const UserProvider = ({children}: {children: React.ReactNode}) => {
       const loginResult: LoginResponse = await postLogin(credentials);
       if (loginResult) {
         if ('token' in loginResult && 'user' in loginResult) {
-          alert(loginResult.message);
           localStorage.setItem('token', loginResult.token);
           setUser(loginResult.user);
         }
-        navigate('/');
       }
+      alert(loginResult.message);
+      navigate('/');
     } catch (e) {
       // 如果返回errMsg， 会报出类似异常：Cannot use 'in' operator to search for 'token' in 用户名或密码不正确
       alert('用户名或密码不正确');
@@ -44,6 +44,7 @@ const UserProvider = ({children}: {children: React.ReactNode}) => {
       navigate('/');
     } catch (e) {
       console.log((e as Error).message);
+      alert((e as Error).message);
     }
   };
 

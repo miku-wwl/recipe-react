@@ -1,5 +1,6 @@
 import {Link, Outlet} from 'react-router-dom';
 import {useUserContext} from '../hooks/contextHooks';
+import './Layout.css'
 
 const Layout = () => {
   const {user, handleAutoLogin} = useUserContext();
@@ -10,46 +11,35 @@ const Layout = () => {
 
   return (
     <>
-      <header>
-        <nav className="nav">
-          <ul className="nav-list">
-            <li className="nav-list-item">
-              <Link to="/" className="nav-link">
-                <img src="recipe-sharing-logo-360-180.svg" alt="cook note" />
-              </Link>
+      <header className="px-1.5 py-0 bg-white shadow-sm">
+        <nav className="h-full flex items-center justify-between">
+        <Link to="/" className="h-full text-center px-0 py-0">
+          <img className="h-20 w-auto mr-2" src="recipe-sharing-logo-360-180.svg" alt="cook note" />
+        </Link>
+        <ul className="flex items-center text-sm font-medium uppercase tracking-wide">
+         {user ? (
+          <>
+            <li className="mx-2">
+              <Link to="/create" className="rounded-md px-3 py-1 hover:bg-gray-200 transition-colors">Create Recipe</Link>
             </li>
-            <li className="nav-list-item">
-              <Link to="/create" className="nav-link">
-                Create
-              </Link>
+            <li className="mx-2">
+              <Link to="/profile" className="rounded-md px-3 py-1 hover:bg-gray-200 transition-colors">Profile</Link>
             </li>
-            <li className="nav-list-item">
-              <Link to="/profile" className="nav-link">
-                Profile
-              </Link>
+          </>
+          ) : (
+            <li className="mx-2">
+              <Link to="/login" className="rounded-md px-3 py-1 hover:bg-gray-200 transition-colors">Log in</Link>
             </li>
-            <li className="nav-list-item">
-              <Link to="/logout" className="nav-link">
-                Logout
-              </Link>
-            </li>
-            <li className="nav-list-item">
-              <Link to="/register" className="nav-link">
-                Register
-              </Link>
-            </li>
-            <li className="nav-list-item">
-              <Link to="/login" className="nav-link">
-                Login
-              </Link>
-            </li>
+          )}
           </ul>
         </nav>
       </header>
-      <main>
+      <main className=" max-w-lg m-auto px-2 py-1">
         <Outlet />
       </main>
-      <footer></footer>
+      <footer className="p-2.5 bg-prussian-blue fixed-footer">
+        <p className=" text-white text-center">Weilai React+TS+Tailwind 2024</p>
+      </footer>
     </>
   );
 };

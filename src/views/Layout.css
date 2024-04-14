@@ -1,0 +1,7 @@
+.fixed-footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%; /* 确保 footer 填满整个屏幕宽度 */
+  left: 0; /* 确保 footer 贴在左侧，这通常不是必需的，但在这里为了完整性 */
+  z-index: 100; /* 可能需要设置一个较高的 z-index 以确保 footer 显示在其他内容之上 */
+}
