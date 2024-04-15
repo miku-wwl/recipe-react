@@ -27,7 +27,7 @@ type MediaItem = {
   title: string;
   description: string | null;
   created_at: Date | string;
-  serving: number;
+  serving: string;
   cook_time: string;
   ingredients: string;
   instruction: string;

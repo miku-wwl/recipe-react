@@ -18,6 +18,7 @@ const useForm = (callback: () => void, initState: Record<string, string>) => {
         ...inputs,
         [event.target.name]: event.target.value,
       }));
+      console.log('inputs', inputs);
   };
 
   return {

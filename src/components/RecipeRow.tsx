@@ -8,7 +8,6 @@ const RecipeRow = (props: {item: MediaItem}) => {
     <div className="flex flex-col items-center">
       <Link to="/single" state={item}>
         <div>
-          <a href="#">
             <img
               src={
                 item.thumbnail
@@ -19,7 +18,6 @@ const RecipeRow = (props: {item: MediaItem}) => {
                 }
                   alt={item.title}
               />
-          </a>
         </div>
       </Link>
       <div>
