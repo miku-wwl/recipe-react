@@ -1,36 +1,65 @@
 import {NavigateFunction, useLocation, useNavigate} from 'react-router-dom';
-import {MediaItem} from '../types/DBTypes';
+import {MediaItem, UserWithNoPassword} from '../types/DBTypes';
+import { useUser } from "../hooks/apiHooks";
+import { useEffect, useState } from "react";
 
 const Single = () => {
   const {state} = useLocation();
   const navigate: NavigateFunction = useNavigate();
   console.log('single state', state);
   const item: MediaItem = state;
+  const {getUserById} = useUser();
+  const [owner, setOwner] = useState<UserWithNoPassword | null>(null);
+  const getOwner = async () => {
+    try {
+      const result = await getUserById(item.user_id);
+      setOwner(result);
+    } catch (e) {
+      console.log((e as Error).message);
+    }
+  };
+
+  useEffect(() => {
+    getOwner();
+  }, []);
+
   return (
     <>
-      <h3>{item.title}</h3>
+      <div className=" flex flex-col">
       <br/>
       {item.media_type?.includes('video') ? (
         <video controls src="{item.filename}"></video>
       ) : (
         <img
+          className="border rounded-lg"
           src={import.meta.env.VITE_RECIPE + '/recipe/images/' + item.filename}
           alt={item.title}
         />
       )}
-      <br/>
-      <p>{item.description}</p>
-      <br/>
-      <p>{item.ingredients}</p>
-      <br/>
-      <p>{item.instruction}</p>
-      <br/>
-      <p>{new Date(item.created_at).toLocaleString('zh-CN')}</p>
-      <br/>
-      <p>{item.filesize}</p>
-      <br/>
-      <p>{item.media_type}</p>
-      <br/>
+      <h3 className=" text-3xl text-center font-serif font-bold m-4">{item.title}</h3>
+      <div className=" mb-5">
+        <h4 className=" text-2xl font-medium mb-2  text-red-950">Author</h4>
+        <p>{owner?.username}</p>
+        <p>{new Date(item.created_at).toLocaleString('zh-CN')}</p>
+      </div>
+      <div className=" mb-5">
+      <div className=" flex mb-2">
+          <div className=" mr-6">
+            <img className=" inline w-8 h-8 mr-2" src="icons8-clock-50.png" alt="clock" />
+            <span className="inline">{item.cook_time}</span>
+          </div>
+          <div>
+            <img className=" inline w-8 h-8 mr-2" src="icons8-person-64.png" alt="person" />
+            <span className="inline">{item.serving}</span>
+          </div>
+        </div>
+        <h4 className=" text-2xl font-medium  mb-2 text-red-950">Ingredients</h4>
+        <p>{item.ingredients}</p>
+      </div>
+      <div className=" mb-5">
+        <h4 className=" text-2xl font-medium  mb-2 text-red-950">Instruction</h4>
+        <p>{item.instruction}</p>
+      </div>
       <button className=" w-28 h-10 my-2 rounded-md bg-orange-wheel p-3 self-center hover:bg-light-orange"
         onClick={() => {
           navigate(-1);
@@ -41,6 +70,7 @@ const Single = () => {
       <br/>
       <br/>
       <br/>
+      </div>
     </>
   );
 };

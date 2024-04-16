@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { fetchData } from "../lib/functions";
-import { MediaItem, MediaItemWithOwner, User } from "../types/DBTypes";
+import { MediaItem, MediaItemWithOwner, User , UserWithNoPassword } from "../types/DBTypes";
 import { Credentials } from "../types/LocalTypes";
 import { LoginResponse, MediaResponse, UploadResponse, UserResponse } from "../types/MessageTypes";
 
@@ -114,7 +114,12 @@ const useUser = () => {
     return result;
   };
 
-  return {getUserByToken, postUser, getUsernameAvailable, getEmailAvailable};
+  const getUserById = async (id: number) => {
+    const result = await fetchData<UserWithNoPassword>(import.meta.env.VITE_AUTH_API + '/users/' + id);
+    return result;
+  };
+
+  return {getUserByToken, postUser, getUsernameAvailable, getEmailAvailable, getUserById};
 }
 
 const useAuthentication = () => {
