@@ -46,7 +46,7 @@ const Create = () => {
   const {handleSubmit, handleInputChange, inputs} = useForm(doCreate, initValues);
   return (
     <div className="flex justify-center justify-items-center content-center">
-      <form onSubmit={handleSubmit} className="w-full flex flex-col p-6 border rounded bg-vanilla max-w-screen-md text-center">
+      <form onSubmit={handleSubmit} className="w-full flex flex-col p-6 border rounded bg-vanilla max-w-screen-md sm:p-6">
         <div className=" flex flex-col mb-3">
             <label className=" text-xl font-medium" htmlFor="title">Title</label>
             <input
