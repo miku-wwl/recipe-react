@@ -8,7 +8,7 @@ const Profile = () => {
   return (
     <>
       <div className=" bg-white p-4 relative">
-        <h2 className="text-3xl my-4">Profiili</h2>
+        <h2 className="text-3xl my-4">Profile</h2>
         {user && (
           <div className="">
             <div>

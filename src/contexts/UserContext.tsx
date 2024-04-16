@@ -23,6 +23,7 @@ const UserProvider = ({children}: {children: React.ReactNode}) => {
       if (loginResult) {
         if ('token' in loginResult && 'user' in loginResult) {
           localStorage.setItem('token', loginResult.token);
+          localStorage.setItem('user_id', loginResult.user.user_id.toString());
           setUser(loginResult.user);
         }
       }
@@ -38,6 +39,7 @@ const UserProvider = ({children}: {children: React.ReactNode}) => {
     try {
       // remove token from local storage
       localStorage.removeItem('token');
+      localStorage.removeItem('user_id');
       // set user to null
       setUser(null);
       // navigate to home

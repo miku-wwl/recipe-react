@@ -22,13 +22,17 @@ const Create = () => {
     console.log('file', file);
 
     const token = localStorage.getItem('token');
-    if (!token || !file) {
+    const user_id_str = localStorage.getItem('user_id')
+
+    if (!token || !file || !user_id_str) {
       return;
     }
+
+    const user_id = parseInt(user_id_str, 10);
     try {
       const fileResult = await postFile(file, token);
-      // TODO 0416
-      // const recipeResult = await postRecipe(fileResult, inputs, token);
+      const recipeResult = await postRecipe(fileResult, inputs, token, user_id);
+      alert(recipeResult.message);
       // redirect to Home
       navigate('/');
   } catch (e) {
@@ -81,9 +85,9 @@ const Create = () => {
         <label htmlFor="cookTime">Cook time</label>
           <input
             className="border border-slate-700"
-            name="cookTime"
+            name="cook_time"
             type="text"
-            id="cookTime"
+            id="cook_time"
             placeholder="60 min"
             onChange={handleInputChange}
           />
