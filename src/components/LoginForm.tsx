@@ -16,7 +16,7 @@ const LoginForm = () => {
 
   return (
     <>
-      <div className=" flex flex-col items-center gap-5 my-6 h-screen">
+      <div className=" flex flex-col items-center gap-5 my-6 h-auto">
         <h3 className=" text-3xl text-center">Login</h3>
         <form
           onSubmit={handleSubmit}
