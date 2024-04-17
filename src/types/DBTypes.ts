@@ -139,6 +139,14 @@ type FileInfo = {
   user_id: number;
 };
 
+type LikeItemWithOwner =  {
+  username: string;
+  like_id: number;
+  media_id: number;
+  user_id: number;
+  created_at: Date;
+};
+
 export type {
   UserLevel,
   User,
@@ -158,4 +166,5 @@ export type {
   TokenContent,
   MediaItemWithOwner,
   FileInfo,
+  LikeItemWithOwner,
 };
