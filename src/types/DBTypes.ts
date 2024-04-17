@@ -44,6 +44,16 @@ type Comment = {
   created_at: Date;
 };
 
+type PostLikeRequest = {
+  media_id: number; // REST API
+  user_id: number; // REST API
+};
+
+type GetUserLikeRequest = {
+  media_id: number; // REST API
+  user_id: number; // REST API
+};
+
 type Like = {
   like_id: number; // REST API
   media_id: number; // REST API
@@ -133,6 +143,8 @@ export type {
   UserLevel,
   User,
   MediaItem,
+  PostLikeRequest,
+  GetUserLikeRequest,
   Comment,
   Like,
   Rating,

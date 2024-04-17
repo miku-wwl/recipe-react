@@ -1,6 +1,7 @@
 import { useEffect, useReducer } from "react";
-import { Like, MediaItemWithOwner } from "../types/DBTypes";
+import { GetUserLikeRequest, Like, MediaItemWithOwner, PostLikeRequest } from "../types/DBTypes";
 import { useLike } from "../hooks/apiHooks";
+import { useUserContext } from "../hooks/contextHooks";
 
 // likeCount: total likes of the recipe
 // useLike: object Like if user has liked, otherwise null
@@ -36,6 +37,7 @@ function likeReducer(state: LikeState, action: LikeAction): LikeState {
 }
 
 const Likes = (props: {recipeItem: MediaItemWithOwner}) => {
+  const {user}  = useUserContext()
   const {recipeItem} = props;
 
   // likeDispatch: dispatch function
@@ -46,11 +48,16 @@ const Likes = (props: {recipeItem: MediaItemWithOwner}) => {
   // get user like
   const getLike = async () => {
     const token = localStorage.getItem('token');
-    if (!recipeItem || !token) {
+    if (!recipeItem || !token || !user) {
       return;
     }
+
     try {
-      const userLike = await getUserLike(recipeItem.media_id, token);
+      const getUserLikeRequest: GetUserLikeRequest = {
+          media_id:recipeItem.media_id,
+          user_id:user?.user_id,
+      }
+      const userLike = await getUserLike(getUserLikeRequest, token);
       likeDispatch({type: 'like', like: userLike});
     } catch (e) {
       likeDispatch({type: 'like', like: null});
@@ -82,6 +89,7 @@ const Likes = (props: {recipeItem: MediaItemWithOwner}) => {
     try {
       const token = localStorage.getItem('token');
       if (!recipeItem || !token) {
+        alert("Please log in first.")
         return;
       }
       // If user has liked the media, delete the like. Otherwise, post the like.
@@ -92,7 +100,14 @@ const Likes = (props: {recipeItem: MediaItemWithOwner}) => {
       } else {
         //post the like and dispatch the new like count to the state.
         // Dispatching is already done in the getLikes and getLikeCount functions.
-        await postLike(recipeItem.media_id, token);
+        if (user == null) {
+          return
+        }
+        const postLikeReq : PostLikeRequest = {
+          media_id:recipeItem.media_id,
+          user_id:user?.user_id
+        }
+        await postLike(postLikeReq, token);
       }
       getLike();
       getLikeCount();
@@ -114,7 +129,7 @@ const Likes = (props: {recipeItem: MediaItemWithOwner}) => {
         </svg>
         <span>{likeState.likeCount}</span>
       </button>
-      <p>{likeState.userLike ? 'ja nhung ban khac da thich': ''}</p>
+      <p>{likeState.userLike ? 'You like it.': ''}</p>
     </div>
   );
 }

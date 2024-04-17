@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { fetchData } from "../lib/functions";
-import { Like, MediaItem, MediaItemWithOwner, User , UserWithNoPassword } from "../types/DBTypes";
+import { GetUserLikeRequest, Like, MediaItem, MediaItemWithOwner, PostLikeRequest, User , UserWithNoPassword } from "../types/DBTypes";
 import { Credentials } from "../types/LocalTypes";
 import { LoginResponse, MediaResponse, MessageResponse, UploadResponse, UserResponse } from "../types/MessageTypes";
 
@@ -162,7 +162,7 @@ const useFile = () => {
 }
 
 const useLike = () => {
-  const postLike = async (media_id: number, token: string) => {
+  const postLike = async (postLikeReq: PostLikeRequest, token: string) => {
     // Send a POST request to /likes with object { media_id }
     // and the token in the Authorization header.
     const options: RequestInit = {
@@ -171,7 +171,7 @@ const useLike = () => {
         Authorization: 'Bearer ' + token,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({media_id}),
+      body: JSON.stringify(postLikeReq),
     };
 
     return await fetchData<MessageResponse>(
@@ -204,17 +204,19 @@ const useLike = () => {
     );
   };
 
-  const getUserLike = async (media_id: number, token: string) => {
+  const getUserLike = async (getUserLikeRequest: GetUserLikeRequest, token: string) => {
     // Send a GET request to /likes/bymedia/user/:media_id
     // to get the user's like on the media.
     const options: RequestInit = {
-      method: 'GET',
+      method: 'POST',
       headers: {
         Authorization: 'Bearer ' + token,
+        'Content-Type': 'application/json',
       },
+      body: JSON.stringify(getUserLikeRequest)
     };
     return await fetchData<Like>(
-      import.meta.env.VITE_MEDIA_API + '/likes/bymedia/user/' + media_id,
+      import.meta.env.VITE_MEDIA_API + '/likes/user',
       options,
     );
   };
