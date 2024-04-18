@@ -23,7 +23,7 @@ const LoginForm = () => {
           className=" flex flex-col py-6 px-5 border rounded bg-vanilla"
         >
           <div className=" flex flex-col mb-3">
-            <label className="" htmlFor="loginUsername">
+            <label className="pl-6" htmlFor="loginUsername">
               Username:
             </label>
             <input
@@ -36,7 +36,7 @@ const LoginForm = () => {
             />
           </div>
           <div className=" flex flex-col mb-3">
-            <label className=" p" htmlFor="loginpassword">
+            <label className="pl-6" htmlFor="loginpassword">
               Password
             </label>
             <input
