@@ -14,10 +14,10 @@ const Single = () => {
       <div className=" flex flex-col p-4">
       <br/>
       {item.media_type?.includes('video') ? (
-        <video controls src="{item.filename}"></video>
+        <video controls src={item.filename}></video>
       ) : (
         <img
-          className="border rounded-lg"
+          className="border rounded-lg max-h-[70vh] object-cover"
           src={import.meta.env.VITE_RECIPE + '/recipe/images/' + item.filename}
           alt={item.title}
         />
@@ -47,7 +47,7 @@ const Single = () => {
         <p>{item.instruction}</p>
       </div>
       <Likes recipeItem={item}/>
-      <Comments />
+      <Comments recipeItem={item} />
       <button className=" w-28 h-10 my-2 rounded-md bg-orange-wheel p-3 self-center hover:bg-light-orange"
         onClick={() => {
           navigate(-1);

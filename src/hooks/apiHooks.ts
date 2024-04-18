@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { fetchData } from "../lib/functions";
-import { GetUserLikeRequest, Like, LikeItemWithOwner, MediaItem, MediaItemWithOwner, PostLikeRequest, User , UserWithNoPassword } from "../types/DBTypes";
+import { GetUserLikeRequest, Like, LikeItemWithOwner, MediaItem, MediaItemWithOwner, Comment, PostLikeRequest, User , UserWithNoPassword } from "../types/DBTypes";
 import { Credentials } from "../types/LocalTypes";
 import { LoginResponse, MediaResponse, MessageResponse, UploadResponse, UserResponse } from "../types/MessageTypes";
 
@@ -240,5 +240,50 @@ const useLike = () => {
   return {postLike, deleteLike, getCountByMediaId, getUserLike, getLikeListWithOwner};
 };
 
-export {useRecipe, useAuthentication, useUser, useFile, useLike};
+const useComment = () => {
+  const postComment = async (
+    comment_text: string,
+    media_id: number,
+    user_id:number,
+    token: string) => {
+    // Send a POST request to /comments with the comment object
+    // and the token in the Authorization header.
+    const options: RequestInit = {
+      method: 'POST',
+      headers: {
+        Authorization: 'Bearer ' + token,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({comment_text, media_id, user_id}),
+    }
+
+    return await fetchData<MessageResponse>(
+      import.meta.env.VITE_MEDIA_API + '/comments',
+      options,
+    );
+  };
+
+  const {getUserById} = useUser();
+
+  const getCommentsByMediaId = async (media_id: number) => {
+    // Send a GET request to /comments/:media_id to get the comments.
+    const comments =  await fetchData<Comment[]>(
+      import.meta.env.VITE_MEDIA_API + '/comments/media/' + media_id,
+    );
+    // get usernames for all comments from auth api
+    const commentsWithUsername = await Promise.all<
+      Comment & {username: string}
+    >(
+      comments.map(async (comment) => {
+        const user = await getUserById(comment.user_id);
+        return {...comment, username: user.username}
+      }),
+    );
+    return commentsWithUsername;
+  };
+
+  return { postComment, getCommentsByMediaId };
+};
+
+export {useRecipe, useAuthentication, useUser, useFile, useLike, useComment};
 
